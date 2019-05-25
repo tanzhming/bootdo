@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.activiti.dao.FlowAuthDao">
+
+	<select id="get" resultType="com.bootdo.activiti.domain.FlowAuthDO">
+		select `id`,`flow_id`,`flow_name`,`user_id`,`user_name`,`create_id`,`create_by`,`create_date`,`update_id`,`update_by`,`update_date` from flow_auth where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.activiti.domain.FlowAuthDO">
+		select `id`,`flow_id`,`flow_name`,`user_id`,`user_name`,`create_id`,`create_by`,`create_date`,`update_id`,`update_by`,`update_date` from flow_auth
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="flowId != null and flowId != ''"> and flow_id = #{flowId} </if>
+		  		  <if test="flowName != null and flowName != ''"> and flow_name = #{flowName} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+		  		  <if test="createId != null and createId != ''"> and create_id = #{createId} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateId != null and updateId != ''"> and update_id = #{updateId} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from flow_auth
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="flowId != null and flowId != ''"> and flow_id = #{flowId} </if>
+		  		  <if test="flowName != null and flowName != ''"> and flow_name = #{flowName} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+		  		  <if test="createId != null and createId != ''"> and create_id = #{createId} </if>
+		  		  <if test="createBy != null and createBy != ''"> and create_by = #{createBy} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="updateId != null and updateId != ''"> and update_id = #{updateId} </if>
+		  		  <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.activiti.domain.FlowAuthDO" useGeneratedKeys="true" keyProperty="id">
+		insert into flow_auth
+		(
+			`flow_id`, 
+			`flow_name`, 
+			`user_id`, 
+			`user_name`, 
+			`create_id`, 
+			`create_by`, 
+			`create_date`, 
+			`update_id`, 
+			`update_by`, 
+			`update_date`
+		)
+		values
+		(
+			#{flowId}, 
+			#{flowName}, 
+			#{userId}, 
+			#{userName}, 
+			#{createId}, 
+			#{createBy}, 
+			#{createDate}, 
+			#{updateId}, 
+			#{updateBy}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.activiti.domain.FlowAuthDO">
+		update flow_auth 
+		<set>
+			<if test="flowId != null">`flow_id` = #{flowId}, </if>
+			<if test="flowName != null">`flow_name` = #{flowName}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="createId != null">`create_id` = #{createId}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateId != null">`update_id` = #{updateId}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from flow_auth where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from flow_auth where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
