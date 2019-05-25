@@ -93,7 +93,6 @@ public class TestDemo {
         List<HistoricProcessInstance> list = historyService.createHistoricProcessInstanceQuery().startedBy("tanzhiming").list();
         System.out.println(JSON.toJSONString(list));
 
-
     }
 
     @Test
