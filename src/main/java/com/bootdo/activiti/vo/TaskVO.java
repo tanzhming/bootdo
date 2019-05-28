@@ -1,5 +1,6 @@
 package com.bootdo.activiti.vo;
 
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.task.Task;
 
 /**
@@ -8,7 +9,6 @@ import org.activiti.engine.task.Task;
 public class TaskVO  {
 
     public TaskVO(Task task){
-
         this.setId(task.getId());
         this.setKey(task.getTaskDefinitionKey());
         this.setName(task.getName());
@@ -18,6 +18,18 @@ public class TaskVO  {
         this.setProcessId(task.getProcessInstanceId());
         this.setProcessDefinitionId(task.getProcessDefinitionId());
         this.setExecutionId(task.getExecutionId());
+    }
+
+    public TaskVO(HistoricProcessInstance historicProcessInstance){
+        this.setId(historicProcessInstance.getId()); // 流程实例id
+//        this.setKey(task.getTaskDefinitionKey());
+        this.setName(historicProcessInstance.getProcessDefinitionName());
+//        this.setDescription(task.getDescription());
+//        this.setAssignee(task.getAssignee());
+//        this.setFormKey(task.getFormKey());
+//        this.setProcessId(task.getProcessInstanceId());
+        this.setProcessDefinitionId(historicProcessInstance.getProcessDefinitionId());
+//        this.setExecutionId(task.getExecutionId());
     }
     private  String id;
     private String name;

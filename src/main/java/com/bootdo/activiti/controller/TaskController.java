@@ -65,6 +65,7 @@ public class TaskController {
 //                .listPage(offset, limit);
 //        ProcessDefinition processDefinition1 = repositoryService.createProcessDefinitionQuery().deploymentId("182501").singleResult();
 //        repositoryService.addCandidateStarterUser(processDefinition1.getId(), user.getUserId()+"");
+        // 查询发起人为当前用户的流程
         List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().startableByUser(user.getUserId()+"").listPage(offset, limit);
         int count = (int) repositoryService.createProcessDefinitionQuery().count();
         List<Object> list = new ArrayList<>();
@@ -102,9 +103,11 @@ public class TaskController {
     List<TaskVO> todoList(){
         String username = ShiroUtils.getUser().getUsername();
 //        List<Task> tasks = taskService.createTaskQuery().taskAssignee(username).list();
+        // 查询当前用户的待办任务
         List<Task> tasks = taskService.createTaskQuery().taskCandidateOrAssigned(username).list();
         DeptDO deptDO = deptService.get(ShiroUtils.getUser().getDeptId());
         String deptName = deptDO.getName();
+        // 查询单签角色待办任务
         List<Task> task2 = taskService.createTaskQuery().taskCandidateGroup(deptName).list();
         task2.removeAll(tasks);
         tasks.addAll(task2);
@@ -133,26 +136,19 @@ public class TaskController {
     }
 
     /**
-     * 流程跟踪
+     * 流程跟踪(查询我发起的的流程信息)
      */
     @GetMapping("/trackTask")
+    @ResponseBody
     List<TaskVO> trackTask(){
         String username = ShiroUtils.getUser().getUsername();
-        List<HistoricProcessInstance> list = historyService.createHistoricProcessInstanceQuery().startedBy("tanzhiming").list();
+        List<HistoricProcessInstance> list = historyService.createHistoricProcessInstanceQuery().startedBy(username).list();
         System.out.println(JSON.toJSONString(list));
         List<TaskVO> taskVOS =  new ArrayList<>();
         for (HistoricProcessInstance historicProcessInstance : list) {
-            historicProcessInstance.getId();
-            historicProcessInstance.getProcessDefinitionKey();
-            historicProcessInstance.getName();
-            historicProcessInstance.getDescription();
-            historicProcessInstance.getEndTime();
-//            taskVOS.add(taskVO);
+            TaskVO taskVO = new TaskVO(historicProcessInstance);
+            taskVOS.add(taskVO);
         }
-//        for(Task task : list){
-//            TaskVO taskVO = new TaskVO(task);
-//            taskVOS.add(taskVO);
-//        }
         return taskVOS;
     }
 

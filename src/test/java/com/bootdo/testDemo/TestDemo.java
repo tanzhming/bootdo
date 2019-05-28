@@ -11,6 +11,7 @@ import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
@@ -88,11 +89,15 @@ public class TestDemo {
     @Test
     public void test4(){
 //        Deployment deployment = repositoryService.createDeploymentQuery().deploymentId("217501").singleResult();
+        List<Task> admin = taskService.createTaskQuery().taskCandidateUser("admin").list();
 
         // 查询由某人发起流程
-        List<HistoricProcessInstance> list = historyService.createHistoricProcessInstanceQuery().startedBy("tanzhiming").list();
-        System.out.println(JSON.toJSONString(list));
+//        List<HistoricProcessInstance> list = historyService.createHistoricProcessInstanceQuery().startedBy("tanzhiming").list();
+//        System.out.println(JSON.toJSONString(list));
 
+        // 查询某个用户的已办任务
+        List<HistoricTaskInstance> hisTask = historyService.createHistoricTaskInstanceQuery().taskAssignee("tanzhiming").list();
+        System.out.println(JSON.toJSONString(hisTask));
     }
 
     @Test

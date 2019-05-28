@@ -19,6 +19,10 @@
 									class="btn  btn-danger" onclick="batchRemove()">
 									<i class="fa fa-trash " aria-hidden="true"></i>删除
 								</button>
+								<button shiro:hasPermission="sys:user:test" type="button"
+									class="btn  btn-danger" onclick="test()">
+									<i class="fa fa-trash " aria-hidden="true"></i>测试
+								</button>
 							</div>
 							<div class="columns pull-right">
 								<button class="btn btn-success" onclick="reLoad()">查询</button>

@@ -198,3 +198,7 @@ function batchRemove() {
 		});
 	}, function() {});
 }
+
+function test() {
+    layer.alert("测试");
+}

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>面向学习型的开源框架，简洁高效，减少过渡封装，展现技术本质</title>
+    <title>简若宁</title>
     <meta name="keywords" content="面向学习型的开源框架，简洁高效，杜绝过渡封装，展现技术本质本质">
     <meta name="description" content="面向学习型的开源框架，简洁高效，杜绝过渡封装，展现技术本质本质">
     <!--[if lt IE 9]>
@@ -135,6 +135,10 @@
                             class="right-sidebar-toggle" aria-expanded="false"> <i
                             class="fa fa-tasks"></i> 主题
                     </a></li>
+                    <li class="dropdown hidden-xs">
+                       <!-- <a href="/logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>-->
+                        <a href="/logout" class="" aria-expanded="false"> <i class="fa fa fa-sign-out"></i>  退出 </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -162,7 +166,7 @@
                     <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
                 </ul>
             </div>
-            <a href="/logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            <a href="#" class="roll-nav roll-right J_tabExit"><i class="fa  fa-refresh"></i> 刷新</a>
         </div>
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%"
@@ -170,7 +174,7 @@
                     seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">BootDo面向学习型的开源框架</div>
+            <div class="pull-right">面向学习</div>
         </div>
     </div>
     <!--右侧部分结束-->
@@ -366,6 +370,17 @@
             this.notify()
         }
     })
+
+    // 刷新按钮
+    $('.J_tabExit').on('click', refreshTab);
+
+    //刷新iframe
+    function refreshTab() {
+        var currentId = $('.page-tabs-content').find('.active').attr('data-id');
+        var target = $('.J_iframe[data-id="' + currentId + '"]');
+        var url = target.attr('src');
+        target.attr('src', url).ready();
+    }
 </script>
 </body>
 </html>
