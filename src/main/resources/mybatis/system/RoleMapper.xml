@@ -95,4 +95,14 @@
 		</foreach>
 	</delete>
 
+    <!-- 查询用户角色信息 -->
+    <select id="selectUserRoleByUserId" resultType="com.bootdo.system.domain.RoleDO">
+        SELECT a.*
+        from sys_role a,
+             sys_user_role b,
+             sys_user c
+        WHERE a.role_id = b.role_id
+          and c.user_id = b.user_id
+          and c.user_id = #{userId}
+    </select>
 </mapper>

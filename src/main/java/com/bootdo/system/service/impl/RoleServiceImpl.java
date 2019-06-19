@@ -118,4 +118,8 @@ public class RoleServiceImpl implements RoleService {
         return r;
     }
 
+    @Override
+    public List<RoleDO> selectUserRoleByUserId(Long userId) {
+        return roleMapper.selectUserRoleByUserId(userId);
+    }
 }

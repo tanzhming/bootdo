@@ -2,6 +2,7 @@ package com.bootdo.system.domain;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.management.relation.Role;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -31,11 +32,13 @@ public class UserDO implements Serializable {
     private Date gmtCreate;
     // 修改时间
     private Date gmtModified;
-    //角色
+    //角色id
     private List<Long> roleIds;
+    // 用户角色
+    private List<RoleDO> roleList;
     //性别
     private Long sex;
-    //出身日期
+    //出生日期
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth;
     //图片ID
@@ -219,6 +222,14 @@ public class UserDO implements Serializable {
         this.district = district;
     }
 
+    public List<RoleDO> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<RoleDO> roleList) {
+        this.roleList = roleList;
+    }
+
     @Override
     public String toString() {
         return "UserDO{" +
@@ -235,6 +246,7 @@ public class UserDO implements Serializable {
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 ", roleIds=" + roleIds +
+                ", roleList=" + roleList +
                 ", sex=" + sex +
                 ", birth=" + birth +
                 ", picId=" + picId +

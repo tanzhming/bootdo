@@ -1,5 +1,6 @@
 package com.bootdo.system.controller;
 
+import com.bootdo.common.annotation.ApiVersion;
 import com.bootdo.common.annotation.Log;
 import com.bootdo.common.config.BootdoConfig;
 import com.bootdo.common.controller.BaseController;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class LoginController extends BaseController {
@@ -67,12 +69,16 @@ public class LoginController extends BaseController {
      * 主页信息
      * @return
      */
-    @GetMapping({"/v_index"})
-    public R index(){
+    @ApiVersion(2)
+    @GetMapping({"/{version}/index"})
+    @ResponseBody
+    public R index2(){
         Map<String,Object> map = new HashMap<>();
         List<Tree<MenuDO>> menus = menuService.listMenuTree(getUserId());
         map.put("menus", menus);
         map.put("name", getUser().getName());
+        List<String> roleName = getUser().getRoleList().stream().map(roleDO -> roleDO.getRoleName()).collect(Collectors.toList());
+        map.put("role", StringUtils.join(roleName,","));
         FileDO fileDO = fileService.get(getUser().getPicId());
         if (fileDO != null && fileDO.getUrl() != null) {
             if (fileService.isExist(fileDO.getUrl())) {
@@ -108,7 +114,6 @@ public class LoginController extends BaseController {
     @PostMapping("/login")
     @ResponseBody
     R ajaxLogin(String username, String password,String verify,HttpServletRequest request) {
-
         try {
             //从session中获取随机数
             String random = (String) request.getSession().getAttribute(RandomValidateCodeUtil.RANDOMCODEKEY);

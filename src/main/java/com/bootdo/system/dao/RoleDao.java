@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 角色
@@ -15,6 +16,13 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface RoleDao {
+
+    /**
+     * 查询用户的角色信息
+     * @param userId 用户id
+     * @return
+     */
+    List<RoleDO> selectUserRoleByUserId(@Param("userId") Long userId);
 
 	RoleDO get(Long roleId);
 	

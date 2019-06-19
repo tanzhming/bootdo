@@ -1,5 +1,6 @@
 package com.bootdo.common.utils;
 
+import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,10 +49,11 @@ public class R extends HashMap<String, Object> {
 		return this;
 	}
 
-	public static R success(Map<String ,Object> map){
+	public static R success(Object obj){
         R r = new R();
         r.put("code",0);
-        r.putAll(map);
+        r.put("msg","操作成功");
+        r.put("data",obj);
         return r;
     }
 }
