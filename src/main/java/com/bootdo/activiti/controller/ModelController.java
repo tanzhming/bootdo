@@ -42,6 +42,7 @@ import java.util.Map;
 import static org.activiti.editor.constants.ModelDataJsonConstants.*;
 
 /**
+ * 模型管理
  * @author bootdo 1992lcg@163.com
  */
 @RequestMapping("/activiti")
@@ -62,6 +63,12 @@ public class ModelController extends BaseController{
         return new ModelAndView("act/model/model");
     }
 
+    /**
+     * 模型列表
+     * @param offset
+     * @param limit
+     * @return
+     */
     @GetMapping("/model/list")
     PageUtils list(int offset, int limit) {
         List<Model> list = repositoryService.createModelQuery().orderByCreateTime().desc().listPage(offset
@@ -71,6 +78,11 @@ public class ModelController extends BaseController{
         return pageUtil;
     }
 
+    /**
+     * 新增模型
+     * @param response
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping("/model/add")
     public void newModel(HttpServletResponse response) throws UnsupportedEncodingException {
 
@@ -154,6 +166,11 @@ public class ModelController extends BaseController{
         }
     }
 
+    /**
+     * 删除模型
+     * @param id
+     * @return
+     */
     @DeleteMapping("/model/{id}")
     public R remove(@PathVariable("id") String id) {
         if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
@@ -163,6 +180,12 @@ public class ModelController extends BaseController{
         return R.ok();
     }
 
+    /**
+     * 部署模型
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/model/deploy/{id}")
     public R deploy(@PathVariable("id") String id) throws Exception {
         if (Constant.DEMO_ACCOUNT.equals(getUsername())) {

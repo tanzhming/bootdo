@@ -68,6 +68,13 @@ public class ProcessController extends BaseController{
         return new ModelAndView("act/process/add");
     }
 
+    /**
+     * 新增流程
+     * @param exportDir
+     * @param category
+     * @param file
+     * @return
+     */
     @PostMapping("/save")
     @Transactional(readOnly = false)
     public R deploy(String exportDir, String category, MultipartFile file) {
@@ -148,6 +155,11 @@ public class ProcessController extends BaseController{
         }
     }
 
+    /**
+     * 删除流程
+     * @param id
+     * @return
+     */
     @PostMapping("/remove")
     public R remove(String id){
         if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
@@ -156,6 +168,12 @@ public class ProcessController extends BaseController{
         repositoryService.deleteDeployment(id,true);
         return R.ok();
     }
+
+    /**
+     * 批量删除流程
+     * @param ids
+     * @return
+     */
     @PostMapping("/batchRemove")
     public R batchRemove(@RequestParam("ids[]") String[] ids) {
         if (Constant.DEMO_ACCOUNT.equals(getUsername())) {

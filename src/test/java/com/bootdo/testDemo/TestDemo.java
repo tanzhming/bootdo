@@ -69,7 +69,6 @@ public class TestDemo {
         for(ProcessDefinition processDefinition: processDefinitions){
             list.add(new ProcessVO(processDefinition));
         }
-
         PageUtils pageUtils = new PageUtils(list, count);
     }
 
