@@ -1,6 +1,13 @@
 package com.bootdo;
 
+import com.bootdo.system.dao.UserDao;
+import com.bootdo.system.domain.UserDO;
+import com.bootdo.system.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.identity.User;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +20,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+
 @EnableAutoConfiguration(exclude = {
         org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
 })
@@ -21,7 +32,13 @@ import org.springframework.web.filter.CorsFilter;
 @MapperScan("com.bootdo.*.dao")
 @SpringBootApplication
 @EnableCaching
-public class BootdoApplication {
+@Slf4j
+public class BootdoApplication implements CommandLineRunner {
+    @Resource
+    private IdentityService identityService;
+    @Resource
+    private UserDao userService;
+
     public static void main(String[] args) {
         SpringApplication.run(BootdoApplication.class, args);
         System.out.println("ヾ(◍°∇°◍)ﾉﾞ    bootdo启动成功      ヾ(◍°∇°◍)ﾉﾞ\n" +
@@ -54,5 +71,22 @@ public class BootdoApplication {
         config.addAllowedMethod("PATCH");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        // 将系统用户表信息写入到activity的用户表中
+        // 删除工作流程信息的用户数据
+        new Thread(() -> {
+            identityService.createNativeUserQuery().sql("delete from act_id_user").list();
+            log.info("用户清除");
+            List<UserDO> list = userService.list(new HashMap<>());
+            list.forEach(userDO -> {
+                User user = identityService.newUser(userDO.getUserId() + "");
+                user.setPassword(userDO.getPassword());
+                identityService.saveUser(user);
+            });
+            log.info("用户初始化成功");
+        }).start();
     }
 }

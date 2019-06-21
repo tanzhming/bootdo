@@ -111,4 +111,14 @@ public class TestDemo {
         List<Task> list2 = taskService.createTaskQuery().taskCandidateOrAssigned("jruoning").list();
         System.out.println(list2);
     }
+
+    /**
+     * 删除用户
+     */
+    @Test
+    public void test6(){
+        identityService.createNativeUserQuery().sql("delete from act_id_user").list();
+        System.out.println("删除成功");
+    }
+
 }

@@ -16,7 +16,9 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ActivitiException;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.activiti.rest.editor.model.ModelEditorJsonRestResource;
@@ -57,6 +59,8 @@ public class ModelController extends BaseController{
     private ObjectMapper objectMapper;
     @Resource
     private UserService userService;
+    @Resource
+    IdentityService identityService;
 
     @GetMapping("/model")
     ModelAndView model() {
@@ -215,37 +219,6 @@ public class ModelController extends BaseController{
                 .deploy();
         modelData.setDeploymentId(deployment.getId());
         repositoryService.saveModel(modelData);
-
-        // 设置流程的发起人
-        /*String initiator = modelNode.get("childShapes").get(0).get("properties").get("initiator").asText().trim();
-        if(initiator == null || "".equals(initiator)){
-            // 为空，设置所有人可发起流程
-            addAll(deployment.getId());
-        }else{
-            if(initiator.contains("user")){
-                initiator = initiator.replace("user(","");
-                initiator = initiator.replace(")","");
-                String[] userIds = initiator.split(",");
-                for (String userId : userIds) {
-                    repositoryService.addCandidateStarterUser(repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult().getId()
-                            , userId);
-                }
-            }else if(initiator.contains("group")){
-                initiator = initiator.replace("group(","");
-                initiator = initiator.replace(")","");
-                String[] groupIds = initiator.split(",");
-                Map<String,Object> params = new HashMap<>();
-                params.put("deptIds",groupIds);
-                List<UserDO> userDOList = userService.list(params);
-                userDOList.forEach(userDO -> {
-                    repositoryService.addCandidateStarterUser(repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult().getId()
-                            , userDO.getUserId()+"");
-                });
-            }else{
-                addAll(deployment.getId());
-            }
-        }*/
-
         return R.ok();
     }
 

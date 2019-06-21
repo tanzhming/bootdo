@@ -91,7 +91,7 @@ function load() {
 								+ row.id
 								+ '\')"><i class="fa fa-cube"></i></a> ';
 							var g = '<a class="btn btn-success btn-sm ' + s_resetPwd_h + '" href="#" title="授权"  mce_href="#" onclick="authorization(\''
-								+ row.deploymentId
+								+ row.id
 								+ '\')"><i class="fa fa-empire"></i>授权</a> ';
 							return d + f + g;
 						}
@@ -168,6 +168,7 @@ function covertToModel(id) {
 function authorization(id){
     console.log("流程发起人授权");
     $("#deploymentId").val(id);
+    console.log(id);
     layer.open({
         type: 2,
         title: '选择人员',
@@ -180,12 +181,13 @@ function authorization(id){
 function loadUser(id,name){
     console.log(id + "----" + name);
     var deploymentId = $("#deploymentId").val();
+    console.log(deploymentId);
     $.ajax({
         type : 'POST',
         url : prefix + '/flowAuth',
         data : {
             userIds : id+"" ,
-            deploymentId : deploymentId
+            processDefId : deploymentId
         },
         dataType:'json',
         success : function(r) {

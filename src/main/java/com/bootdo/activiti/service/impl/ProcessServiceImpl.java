@@ -96,9 +96,9 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public int flowAuth(Long deploymentId,String authUserIds, UserDO user) {
+    public int flowAuth(String processDefId,String authUserIds, UserDO user) {
         int count = 0;
-        if (deploymentId == null) {
+        if (processDefId == null) {
             throw new BDException("参数异常,授权流程不能为空");
         }
         if (StringUtils.isBlank(authUserIds)){
@@ -106,7 +106,9 @@ public class ProcessServiceImpl implements ProcessService {
         }
         String[] userIds = authUserIds.split(",");
         for (String userId : userIds) {
-            Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId + "").singleResult();
+            UserDO userDO = userService.get(Long.valueOf(userId));
+            repositoryService.addCandidateStarterUser(processDefId, userDO.getUserId()+"");
+            /*Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId + "").singleResult();
             FlowAuthDO flowAuthDO = new FlowAuthDO();
             flowAuthDO.setFlowId(deploymentId);
             flowAuthDO.setFlowName(deployment.getName());
@@ -116,8 +118,8 @@ public class ProcessServiceImpl implements ProcessService {
             int num = flowAuthService.save(flowAuthDO, user);
             count += num;
             ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deploymentId+"").singleResult();
-            repositoryService.addCandidateStarterUser(processDefinition.getId(), userId);
+            repositoryService.addCandidateStarterUser(processDefinition.getId(), userId);*/
         }
-        return count;
+        return userIds.length;
     }
 }

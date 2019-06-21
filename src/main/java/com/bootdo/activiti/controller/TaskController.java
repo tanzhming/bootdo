@@ -54,25 +54,21 @@ public class TaskController {
         return new ModelAndView("act/task/gotoTask");
     }
 
+    /**
+     * 查询当前用户可发起的任务
+     * @param offset
+     * @param limit
+     * @return
+     */
     @GetMapping("/gotoList")
     PageUtils list(int offset, int limit) {
         UserDO user = ShiroUtils.getUser();
-       /* User u = identityService.newUser("123");
-        u.setFirstName("sdfsfsfsdf");
-        identityService.saveUser(u);*/
-//        identityService.setAuthenticatedUserId("1");
-//        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
-//                .listPage(offset, limit);
-//        ProcessDefinition processDefinition1 = repositoryService.createProcessDefinitionQuery().deploymentId("182501").singleResult();
-//        repositoryService.addCandidateStarterUser(processDefinition1.getId(), user.getUserId()+"");
-        // 查询发起人为当前用户的流程
-        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().startableByUser(user.getUserId()+"").listPage(offset, limit);
+        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().startableByUser(user.getUserId() + "").listPage(offset, limit);
         int count = (int) repositoryService.createProcessDefinitionQuery().count();
         List<Object> list = new ArrayList<>();
         for(ProcessDefinition processDefinition: processDefinitions){
             list.add(new ProcessVO(processDefinition));
         }
-
         PageUtils pageUtils = new PageUtils(list, count);
         return pageUtils;
     }

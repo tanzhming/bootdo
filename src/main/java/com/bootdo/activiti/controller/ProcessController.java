@@ -187,13 +187,13 @@ public class ProcessController extends BaseController{
 
     /**
      * 流程授权
-     * @param deploymentId 流程部署id
+     * @param processDefId 流程定义id
      */
     @RequestMapping("/flowAuth")
     @ResponseBody
-    public R flowAuth(Long deploymentId,String userIds){
+    public R flowAuth(String processDefId,String userIds){
         UserDO user = ShiroUtils.getUser();
-        int i = processService.flowAuth(deploymentId, userIds, user);
+        int i = processService.flowAuth(processDefId, userIds, user);
         return R.ok();
     }
 }

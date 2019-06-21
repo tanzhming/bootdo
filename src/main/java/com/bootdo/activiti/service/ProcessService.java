@@ -17,9 +17,9 @@ public interface ProcessService {
 
     /**
      * 流程授权用户 ,设置流程发发起人可见
-     * @param deploymentId 流程部署id
+     * @param processDefId 流程定义id
      * @param authUserIds 授权用户id数组
      * @param user 当前处理用户
      */
-    int flowAuth(Long deploymentId,String authUserIds, UserDO user);
+    int flowAuth(String processDefId,String authUserIds, UserDO user);
 }
